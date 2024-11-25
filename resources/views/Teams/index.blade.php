@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Voetbal Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    <style>
+@guest
+    <script type="text/javascript">
+        window.location = "{{ url('/login') }}"; // Redirect to login page if not logged in
+    </script>
+@endguest
+
+<style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
@@ -83,12 +82,9 @@
             color: green;
         }
     </style>
-</head>
-
-<body>
 
 
-    <header id="header">
+<header id="header">
         <div class="container">
             <h1>School Voetbal</h1>
             <nav>
@@ -96,8 +92,8 @@
                 <div class="dropdown">
                     <button class="nav-button">Teams</button>
                     <ul class="dropdown-menu">
-                        <li><a href="{{ route('teams.index') }}">View Teams</a></li>
-                        <li><a href="{{ route('teams.create') }}">Create Team</a></li>
+                        <li><a href="{{ route('teams.index') }}">Bekijk teams</a></li>
+                        <li><a href="{{ route('teams.create') }}">Nieuw team</a></li>
                     </ul>
                 </div>
                 @if(Auth::check())
@@ -111,33 +107,36 @@
         </div>
     </header>
 
-    <main id="dashboard" class="container">
-        <div class="column">
-            <h2>Top 5</h2>
-            <ul>
-                <li>1. Team A</li>
-                <li>2. Team B</li>
-                <li>3. Team C</li>
-                <li>4. Team D</li>
-                <li>5. Team E</li>
-            </ul>
-        </div>
-        <div class="column">
-            <h2>Afbeelding</h2>
-            <div style="height: 200px; background-color: #eee;"></div>
-        </div>
-        <div class="column">
-            <h2>Mijn Team</h2>
-            <ul>
-                <li>Speler 1</li>
-                <li>Speler 2</li>
-                <li>Speler 3</li>
-                <li>Speler 4</li>
-                <li>Speler 5</li>
-            </ul>
-        </div>
-        <div class="column highlight">
-        </div>
-    </main>
-</body>
-</html>
+<table class="table table-striped table-hover mt-4">
+        <tr>
+            <th>Team</th>
+            <th>Punten</th>
+            <th>Informatie</th>
+            <th>Aanpassen</th>
+            <th>Verwijderen</th>
+        </tr>
+
+        @foreach($teams as $team)
+            <tr>
+                <td>{{ $team->name }}</td>
+                <td>{{ $team->points }}</td>
+
+
+                <td><a href="{{ route('teams.show', $team->id) }}">Details</a></td>
+
+                <td>
+                @if (Auth::User()->id == $team->creator_id)
+                    <a href="{{ route('teams.edit', $team->id) }}">Edit</a>
+                @endif
+                </td>
+                <td>
+                @if(Auth::user()->id == $team->creator_id)
+                    <form action="{{ route('teams.destroy', $team->id) }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Verwijder</button>
+                    </form> 
+                @endif
+
+            </tr>
+        @endforeach

@@ -4,6 +4,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Team;
+use App\Models\User;
+use App\Models\Game;
+use App\Models\Goal;
+use App\Models\Player;
+use App\Models\Referee;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +55,11 @@ Route::get('/admin', function () {
     return view('admin');
 })->name('admin');
 
-Route::get('/teams', function () {
-    return view('teams');
-})->name('teams');
+
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('teams', TeamController::class);
+});
 
 require __DIR__.'/auth.php';
