@@ -3,112 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Voetbal Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <title>Dashboard</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
-        #header {
-            background-color: #f4f4f4;
-            padding: 15px;
-            border-bottom: 2px solid #ccc;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
         }
+
         nav {
-            margin-top: 10px;
             display: flex;
-            align-items: center;
-        }
-        nav a {
-            margin-right: 15px;
-            text-decoration: none;
-            color: #333;
-        }
-        nav button, nav h1 {
-            margin-right: 15px;
-        }
-        nav form {
-            margin: 0;
-        }
-        .container {
-            width: 90%;
-            margin: auto;
-        }
-        #dashboard {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            padding: 20px;
-        }
-        .column {
-            flex: 1 1 calc(33.33% - 20px);
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            padding: 15px;
-            background-color: #f9f9f9;
-        }
-        .dropdown {
+            justify-content: center;
+            gap: 20px;
             position: relative;
         }
-        .dropdown-menu {
+
+        nav a, nav button {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        nav a:hover, nav button:hover {
+            background-color: #45a049;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
             display: none;
             position: absolute;
-            background-color: white;
-            border: 1px solid #ccc;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-            top: 100%;
-            left: 0;
-            z-index: 1000;
+            background-color: #4CAF50;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 4px;
         }
-        .dropdown:hover .dropdown-menu {
+
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #45a049;
+        }
+
+        .dropdown:hover .dropdown-content {
             display: block;
         }
-        .dropdown-menu li {
-            padding: 10px;
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
         }
-        .dropdown-menu li:hover {
-            background-color: #f4f4f4;
-        }
-        .highlight {
+
+        .column {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 30%;
             text-align: center;
-            font-size: 1.2em;
-            font-weight: bold;
-            color: green;
+        }
+
+        h2 {
+            color: #4CAF50;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #f2f2f2;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-outline-primary {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+            border-radius: 4px;
+            text-decoration: none;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #4CAF50;
+            color: white;
         }
     </style>
 </head>
-
 <body>
-
-
-    <header id="header">
-        <div class="container">
-            <h1>School Voetbal</h1>
-            <nav>
-                <button onclick="window.location.href='{{ route('dashboard') }}'" class="nav-button">Home</button>
-                <div class="dropdown">
-                    <button class="nav-button">Teams</button>
-                    <ul class="dropdown-menu">
-                        <li><a href="{{ route('teams.index') }}">View Teams</a></li>
-                        <li><a href="{{ route('teams.create') }}">Create Team</a></li>
-                    </ul>
+    <header>
+        <h1>Welkom {{ Auth::user()->name }}</h1>
+        <nav>
+            <a href="{{ route('dashboard') }}">Home</a>
+            <div class="dropdown">
+                <a href="#">Teams</a>
+                <div class="dropdown-content">
+                    <a href="{{ route('teams.index') }}">Alle Teams</a>
+                    <a href="{{ route('teams.create') }}">Nieuw Team</a>
                 </div>
-                @if(Auth::check())
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
-                        @csrf
-                        <button type="submit" class="nav-button">Logout</button>
-                    </form>
-                @endif
-                <h1>Welkom {{ Auth::user()->name }}</h1>
-            </nav>
-        </div>
+            </div>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: inline;">
+                @csrf
+                <button type="submit">Logout</button>
+            </form>
+        </nav>
     </header>
 
     <main id="dashboard" class="container">
@@ -124,6 +158,7 @@
         </div>
         <div class="column">
             <h2>Afbeelding</h2>
+            <img src="{{ asset('images/soccer.png') }}" alt="foutje"/>
             <div style="height: 200px; background-color: #eee;"></div>
         </div>
         <div class="column">
@@ -135,8 +170,6 @@
                 <li>Speler 4</li>
                 <li>Speler 5</li>
             </ul>
-        </div>
-        <div class="column highlight">
         </div>
     </main>
 </body>

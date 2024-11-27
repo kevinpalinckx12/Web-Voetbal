@@ -126,17 +126,18 @@
 
                 <td>
                 @if (Auth::User()->id == $team->creator_id)
-                    <a href="{{ route('teams.edit', $team->id) }}">Edit</a>
+                    <a href="{{ route('teams.edit', $team->id) }}">Aanpassen</a>
                 @endif
                 </td>
                 <td>
-                @if(Auth::user()->id == $team->creator_id)
-                    <form action="{{ route('teams.destroy', $team->id) }}" method="post">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit">Verwijder</button>
-                    </form> 
-                @endif
+                    @if(Auth::user()->id == $team->creator_id)
+                        <form action="{{ route('teams.destroy', $team->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit">Verwijder</button>
+                        </form> 
+                    @endif
+                </td>
 
             </tr>
         @endforeach
