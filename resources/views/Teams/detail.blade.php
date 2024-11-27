@@ -63,8 +63,12 @@
     </div>
     <h2>Spelers:</h2>
     <ul>
-        @foreach($users as $user)
-            <li>{{ $user->name }}</li>
-        @endforeach
+        @if($users->isEmpty())
+            <h2>Geen spelers</h2>
+        @else
+            @foreach($users as $user)
+                <li>{{ $user->name }}</li>
+            @endforeach
+        @endif
     <a class="btn btn-outline-primary" href="{{ route('teams.index') }}">Terug</a>
 </div>
