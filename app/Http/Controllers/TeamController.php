@@ -64,9 +64,13 @@ class TeamController extends Controller
     {
         $team = Team::findOrFail($id);
 
+        $users = User::where('team_id', $team->id)->get();
+
         {
-            return view('teams.detail',compact('team'));
+            return view('teams.detail',compact('team', 'users'));
         }
+
+
         
     }
 
@@ -134,13 +138,13 @@ class TeamController extends Controller
         return view('../teams.index')->with('teams', $teams);
     }
 
-    public function showJoinForm()
+    public function Join()
     {
         $teams = Team::all();
         return view('teams.join')->with('teams', $teams);
     }
 
-    public function join(Request $request)
+    public function storeJoin(Request $request)
     {
         $request->validate([
             'team' => 'required|exists:teams,id',

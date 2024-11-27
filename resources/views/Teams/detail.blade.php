@@ -1,4 +1,3 @@
-
 @guest
     <script type="text/javascript">
         window.location = "{{ url('/login') }}"; // Redirect to login page if not logged in
@@ -63,6 +62,9 @@
         <p><strong>Creator: </strong>{{ $team->user->name }}</p>
     </div>
     <h2>Spelers:</h2>
-
+    <ul>
+        @foreach($users as $user)
+            <li>{{ $user->name }}</li>
+        @endforeach
     <a class="btn btn-outline-primary" href="{{ route('teams.index') }}">Terug</a>
 </div>

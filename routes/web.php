@@ -40,6 +40,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/teams', [TeamController::class, 'index'])->name('teams.index');
     Route::get('/teams/create', [TeamController::class, 'create'])->name('teams.create');
+    Route::get('teams/join', [TeamController::class, 'join'])->name('teams.join');
+    Route::post('teams/join', [TeamController::class, 'storeJoin'])->name('teams.storeJoin');
     Route::post('/teams', [TeamController::class, 'store'])->name('teams.store');
     Route::get('/teams/{team}', [TeamController::class, 'show'])->name('teams.show');
     Route::get('/teams/{team}/edit', [TeamController::class, 'edit'])->name('teams.edit');
